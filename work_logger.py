@@ -273,16 +273,15 @@ def view_work_log():
                         days_worked = today.weekday()  # Monday = 0, Friday = 4
                         
                         # Check if today's work hours have been fully logged
-                        if today in daily_hours:  # If today's hours are fully logged
+                        if today in daily_hours:
                             today_hours = sum(daily_hours[today])
-                            if today_hours > 0:  # Only include today if it's finished
+                            if today_hours > 0:
                                 days_worked = today.weekday() + 1
                                 
                         current_pensum = PENSUM * (days_worked / WORKDAYS)  # Adjust pensum for workdays
                     else:
                         current_pensum = PENSUM
                     
-                    # Calculate difference for the week
                     week_diff = weekly_hours[current_week] - current_pensum
                     total_diff_all_weeks += week_diff
                     sign = "+" if week_diff > 0 else ""
@@ -291,10 +290,11 @@ def view_work_log():
                     print("-" * 50)
                 current_week = week_start
 
-            holiday_note = " (free)" if date in holidays else ""
-
-            total_for_day = sum(daily_hours[date])
-            print(f"{date.strftime('%a, %Y-%m-%d')}{holiday_note}: {total_for_day:.2f} hours")
+            if date in holidays:
+                print(f"{date.strftime('%a, %Y-%m-%d')}: (free)")
+            else:
+                total_for_day = sum(daily_hours[date])
+                print(f"{date.strftime('%a, %Y-%m-%d')}: {total_for_day:.2f} hours")
             total_hours_all_weeks += total_for_day
 
         if current_week is not None:
