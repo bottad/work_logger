@@ -5,19 +5,20 @@ import os
 import platform
 from collections import defaultdict
 
-# File to store working hours data
+# CHANGE TO YOUR NEEDS
+TOTAL_HOLIDAYS = 12  # Total number of holiday days allowed
+PENSUM = 42  # Weekly pensum in hours
+WORKDAYS = 5  # Monday to Friday (5 workdays)
+
+# Filepaths
 FILE_NAME = "data/work_hours.csv"
 STATE_FILE = "data/work_state.json"
 HOLIDAY_FILE = "data/holiday_state.json"
 
-# Global variables to store break times and work start time
+# Global variables to store times
 start_time = None
 break_start_time = None
 total_break_duration = timedelta()
-
-TOTAL_HOLIDAYS = 12  # Total number of holiday days allowed
-PENSUM = 42  # Weekly pensum in hours
-WORKDAYS = 5  # Monday to Friday (5 workdays)
 used_holidays = 0
 
 # Function that clears the console for cleaner seperation of the main menu and the log display
