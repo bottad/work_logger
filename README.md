@@ -133,3 +133,7 @@ In this case, you can use the manual functions to retrospectively log the missin
 ### Data Backup
 
 Make sure to back up the `data/work_hours.csv` file regularly to avoid losing your work log history.
+
+### License
+
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute this software, provided that the original license and copyright notice are included in all copies or substantial portions of the software.
