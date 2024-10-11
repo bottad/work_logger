@@ -385,5 +385,6 @@ def main_menu():
         else:
             print("Invalid option, please try again.")
 
+# Main call
 if __name__ == "__main__":
     main_menu()
