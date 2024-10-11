@@ -10,6 +10,10 @@ TOTAL_HOLIDAYS = 12  # Total number of holiday days allowed
 PENSUM = 42  # Weekly pensum in hours
 WORKDAYS = 5  # Monday to Friday (5 workdays)
 
+#######################################
+# DO NOT CHANGE ANITHING BEYOND HERE! #
+#######################################
+
 # Filepaths
 FILE_NAME = "data/work_hours.csv"
 STATE_FILE = "data/work_state.json"
