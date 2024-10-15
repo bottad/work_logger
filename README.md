@@ -1,4 +1,4 @@
-# Work Hours Tracker
+# Work Logger
 
 This Python program is designed to track working hours, breaks, and holidays. It provides both real-time tracking and manual entry options, making it flexible for various workflows.
 
