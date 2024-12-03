@@ -241,6 +241,7 @@ def view_work_log():
     clear_console()
     try:
         daily_hours = defaultdict(list)
+        daily_breaks = defaultdict(list)  # To track daily break times in minutes
         weekly_hours = defaultdict(float)
         holidays = set()  # To keep track of holiday dates
 
@@ -255,7 +256,14 @@ def view_work_log():
                     daily_hours[date].append(8.4)  # 8.4 hours for a holiday
                     holidays.add(date)  # Add the date to the holidays set
                 else:
+                    # Parse start and end times to calculate break
+                    start_time = datetime.strptime(start, '%H:%M:%S')
+                    end_time = datetime.strptime(end, '%H:%M:%S')
+                    total_worked_time = (end_time - start_time).total_seconds() / 3600
+                    break_time_minutes = (total_worked_time - float(hours)) * 60
+
                     daily_hours[date].append(float(hours))
+                    daily_breaks[date].append(break_time_minutes)
 
                 week_start = date - timedelta(days=date.weekday())  # Get the Monday of that week
                 weekly_hours[week_start] += float(hours)
@@ -299,7 +307,8 @@ def view_work_log():
                 print(f"{date.strftime('%a, %Y-%m-%d')}: (free)")
             else:
                 total_for_day = sum(daily_hours[date])
-                print(f"{date.strftime('%a, %Y-%m-%d')}: {total_for_day:.2f} hours")
+                total_break_for_day = sum(daily_breaks[date])
+                print(f"{date.strftime('%a, %Y-%m-%d')}: {total_for_day:.2f} hours (Break: {total_break_for_day:.0f} minutes)")
             total_hours_all_weeks += total_for_day
 
         if current_week is not None:
