@@ -244,6 +244,7 @@ def view_work_log():
         daily_breaks = defaultdict(list)  # To track daily break times in minutes
         weekly_hours = defaultdict(float)
         holidays = set()  # To keep track of holiday dates
+        ill_days = set() # To keep track of ill dates
 
         with open(FILE_NAME, mode='r') as file:
             reader = csv.reader(file)
@@ -255,6 +256,9 @@ def view_work_log():
                 if "Holiday" in row:
                     daily_hours[date].append(8.4)  # 8.4 hours for a holiday
                     holidays.add(date)  # Add the date to the holidays set
+                elif "ill" in row:
+                    daily_hours[date].append(8.4)  # 8.4 hours for a holiday
+                    ill_days.add(date)  # Add the date to the holidays set
                 else:
                     # Parse start and end times to calculate break
                     start_time = datetime.strptime(start, '%H:%M:%S')
@@ -305,6 +309,8 @@ def view_work_log():
 
             if date in holidays:
                 print(f"{date.strftime('%a, %Y-%m-%d')}: (free)")
+            elif date in ill_days:
+                print(f"{date.strftime('%a, %Y-%m-%d')}: (ill)")
             else:
                 total_for_day = sum(daily_hours[date])
                 total_break_for_day = sum(daily_breaks[date])
