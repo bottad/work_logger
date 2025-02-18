@@ -6,8 +6,8 @@ import platform
 from collections import defaultdict
 
 # CHANGE TO YOUR NEEDS
-TOTAL_HOLIDAYS = 12  # Total number of holiday days allowed
-PENSUM = 42  # Weekly pensum in hours
+TOTAL_HOLIDAYS = 12.5  # Total number of holiday days allowed
+PENSUM = 41  # Weekly pensum in hours
 WORKDAYS = 5  # Monday to Friday (5 workdays)
 
 #######################################
@@ -113,10 +113,15 @@ def end_break():
         print("You haven't started a break yet!")
 
 # Function to log the working hours to a CSV file
-def log_work(start_time, end_time, hours_worked):
-    with open(FILE_NAME, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([start_time.strftime('%Y-%m-%d'), start_time.strftime('%H:%M:%S'), end_time.strftime('%H:%M:%S'), f"{hours_worked:.2f}"])
+def log_work(start_time, end_time, hours_worked, description=None):
+    if description == "Holiday":
+        with open(FILE_NAME, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([start_time.strftime('%Y-%m-%d'), "Holiday", "Holiday", f"{hours_worked:.2f}"])
+    else:
+        with open(FILE_NAME, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([start_time.strftime('%Y-%m-%d'), start_time.strftime('%H:%M:%S'), end_time.strftime('%H:%M:%S'), f"{hours_worked:.2f}"])
     print(f"Work logged for {start_time.strftime('%Y-%m-%d')}")
 
 # Function to manually start work
