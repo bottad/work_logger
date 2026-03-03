@@ -4,20 +4,23 @@ from datetime import datetime, timedelta
 import os
 import platform
 from collections import defaultdict
+from pathlib import Path
 
 # CHANGE TO YOUR NEEDS
-TOTAL_HOLIDAYS = 12.5  # Total number of holiday days allowed
-PENSUM = 41  # Weekly pensum in hours
+TOTAL_HOLIDAYS = 19  # Total number of holiday days allowed
+PENSUM = 42 * 0.9  # Weekly pensum in hours
 WORKDAYS = 5  # Monday to Friday (5 workdays)
 
 #######################################
 # DO NOT CHANGE ANITHING BEYOND HERE! #
 #######################################
 
+BASE_DIR = Path(__file__).resolve().parent
+
 # Filepaths
-FILE_NAME = "data/work_hours.csv"
-STATE_FILE = "data/work_state.json"
-HOLIDAY_FILE = "data/holiday_state.json"
+FILE_NAME = BASE_DIR / "data" / "work_hours.csv"
+STATE_FILE = BASE_DIR / "data" / "work_state.json"
+HOLIDAY_FILE = BASE_DIR / "data" / "holiday_state.json"
 
 # Global variables to store times
 start_time = None
