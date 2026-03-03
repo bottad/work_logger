@@ -366,17 +366,17 @@ def main_menu():
 
     while True:
         print("\n--- Live Commands ---")
-        print("1. Start Work")
-        print("2. Stop Work")
-        print("3. Start Break")
-        print("4. End Break")
+        print("1.  Start Work")
+        print("2.  Stop Work")
+        print("3.  Start Break")
+        print("4.  End Break")
 
         print("\n--- Manual Commands ---")
-        print("5. Manually Start Work")
-        print("6. Manually Stop Work")
-        print("7. Manually Start Break")
-        print("8. Manually End Break")
-        print("9. Manual Log for a Past Day")
+        print("5.  Manually Start Work")
+        print("6.  Manually Stop Work")
+        print("7.  Manually Start Break")
+        print("8.  Manually End Break")
+        print("9.  Manual Log for a Past Day")
         print("10. Log a Holiday")
 
         print("\n--- View and Exit ---")
