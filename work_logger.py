@@ -6,8 +6,8 @@ import platform
 from collections import defaultdict
 
 # CHANGE TO YOUR NEEDS
-TOTAL_HOLIDAYS = 12  # Total number of holiday days allowed
-PENSUM = 42  # Weekly pensum in hours
+TOTAL_HOLIDAYS = 12.5  # Total number of holiday days allowed
+PENSUM = 41  # Weekly pensum in hours
 WORKDAYS = 5  # Monday to Friday (5 workdays)
 
 #######################################
@@ -113,10 +113,15 @@ def end_break():
         print("You haven't started a break yet!")
 
 # Function to log the working hours to a CSV file
-def log_work(start_time, end_time, hours_worked):
-    with open(FILE_NAME, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([start_time.strftime('%Y-%m-%d'), start_time.strftime('%H:%M:%S'), end_time.strftime('%H:%M:%S'), f"{hours_worked:.2f}"])
+def log_work(start_time, end_time, hours_worked, description=None):
+    if description == "Holiday":
+        with open(FILE_NAME, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([start_time.strftime('%Y-%m-%d'), "Holiday", "Holiday", f"{hours_worked:.2f}"])
+    else:
+        with open(FILE_NAME, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([start_time.strftime('%Y-%m-%d'), start_time.strftime('%H:%M:%S'), end_time.strftime('%H:%M:%S'), f"{hours_worked:.2f}"])
     print(f"Work logged for {start_time.strftime('%Y-%m-%d')}")
 
 # Function to manually start work
@@ -244,6 +249,7 @@ def view_work_log():
         daily_breaks = defaultdict(list)  # To track daily break times in minutes
         weekly_hours = defaultdict(float)
         holidays = set()  # To keep track of holiday dates
+        ill_days = set() # To keep track of ill dates
 
         with open(FILE_NAME, mode='r') as file:
             reader = csv.reader(file)
@@ -255,6 +261,9 @@ def view_work_log():
                 if "Holiday" in row:
                     daily_hours[date].append(8.4)  # 8.4 hours for a holiday
                     holidays.add(date)  # Add the date to the holidays set
+                elif "ill" in row:
+                    daily_hours[date].append(8.4)  # 8.4 hours for a holiday
+                    ill_days.add(date)  # Add the date to the holidays set
                 else:
                     # Parse start and end times to calculate break
                     start_time = datetime.strptime(start, '%H:%M:%S')
@@ -305,6 +314,8 @@ def view_work_log():
 
             if date in holidays:
                 print(f"{date.strftime('%a, %Y-%m-%d')}: (free)")
+            elif date in ill_days:
+                print(f"{date.strftime('%a, %Y-%m-%d')}: (ill)")
             else:
                 total_for_day = sum(daily_hours[date])
                 total_break_for_day = sum(daily_breaks[date])
