@@ -130,6 +130,9 @@ def log_work(start_time, end_time, hours_worked, description=None):
 # Function to manually start work
 def manual_start_work():
     global start_time
+
+    clear_console()
+
     today = datetime.now().date()
     start_time_str = input("Enter the start time (HH:MM): ")
     start_time = datetime.combine(today, datetime.strptime(start_time_str, '%H:%M').time())
@@ -139,6 +142,9 @@ def manual_start_work():
 # Function to manually end work
 def manual_end_work():
     global start_time, total_break_duration
+
+    clear_console()
+
     if start_time is None:
         print("No work start entry found!")
         return
@@ -157,6 +163,9 @@ def manual_end_work():
 # Function to manually start break
 def manual_start_break():
     global break_start_time
+
+    clear_console()
+
     today = datetime.now().date()
     start_time_str = input("Enter the start time for break (HH:MM): ")
     break_start_time = datetime.combine(today, datetime.strptime(start_time_str, '%H:%M').time())
@@ -167,6 +176,9 @@ def manual_start_break():
 # Function to manually end break
 def manual_end_break():
     global break_start_time, total_break_duration
+
+    clear_console()
+
     today = datetime.now().date()
     end_time_str = input("Enter the end time for break (HH:MM): ")
     end_time = datetime.combine(today, datetime.strptime(end_time_str, '%H:%M').time())
@@ -183,6 +195,7 @@ def manual_end_break():
 
 # Function to manually log work for a past day
 def manual_log():
+    clear_console()
     try:
         date_str = input("Enter the date for the work log (YYYY-MM-DD): ")
         start_time_str = input("Enter start time (HH:MM): ")
@@ -223,6 +236,8 @@ def load_holiday_state():
 # Function to manually log a holiday
 def manual_log_holiday():
     global used_holidays
+
+    clear_console()
 
     if used_holidays >= TOTAL_HOLIDAYS:
         print("You have used all your available holiday days.")
@@ -356,11 +371,12 @@ def view_work_log():
     except FileNotFoundError:
         print("No work log found. Start logging your hours first.")
 
-    input("\nPress anything to return to the main menu...")
+    input("\nPress Enter to return to the main menu...")
     clear_console()
 
 # Main menu to navigate the program
 def main_menu():
+    clear_console()
     load_state()
     load_holiday_state()
 
