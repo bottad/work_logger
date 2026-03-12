@@ -121,6 +121,10 @@ def log_work(start_time, end_time, hours_worked, description=None):
         with open(FILE_NAME, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([start_time.strftime('%Y-%m-%d'), "Holiday", "Holiday", f"{hours_worked:.2f}"])
+    elif description == "Compensation":
+        with open(FILE_NAME, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([start_time.strftime('%Y-%m-%d'), "Compensation", "Compensation", "0.00"])
     else:
         with open(FILE_NAME, mode='a', newline='') as file:
             writer = csv.writer(file)
@@ -259,6 +263,22 @@ def manual_log_holiday():
     except ValueError:
         print("Invalid date format. Please use YYYY-MM-DD.")
 
+# Function to manually log a compensation day
+def manual_log_compensation_day():
+    clear_console()
+
+    date_str = input("Enter the date for the compensation day (YYYY-MM-DD): ")
+
+    try:
+        compensation_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        
+        log_work(compensation_date, compensation_date, 0, description="Compensation")
+
+        print(f"Compensation day logged for {compensation_date.strftime('%Y-%m-%d')}.")
+
+    except ValueError:
+        print("Invalid date format. Please use YYYY-MM-DD.")
+
 # Function to view the work logs with weekly aggregation and pensum comparison
 def view_work_log():
     clear_console()
@@ -268,6 +288,7 @@ def view_work_log():
         weekly_hours = defaultdict(float)
         holidays = set()  # To keep track of holiday dates
         ill_days = set() # To keep track of ill dates
+        compensation_days = set()  # To keep track of compensation days
 
         with open(FILE_NAME, mode='r') as file:
             reader = csv.reader(file)
@@ -282,6 +303,9 @@ def view_work_log():
                 elif "ill" in row:
                     daily_hours[date].append(8.4)  # 8.4 hours for a holiday
                     ill_days.add(date)  # Add the date to the holidays set
+                elif "Compensation" in row:
+                    daily_hours[date].append(0)  # 0 hours for a compensation day
+                    compensation_days.add(date)  # Add the date to the compensation days set
                 else:
                     # Parse start and end times to calculate break
                     start_time = datetime.strptime(start, '%H:%M:%S')
@@ -334,6 +358,8 @@ def view_work_log():
                 print(f"{date.strftime('%a, %Y-%m-%d')}: (free)")
             elif date in ill_days:
                 print(f"{date.strftime('%a, %Y-%m-%d')}: (ill)")
+            elif date in compensation_days:
+                print(f"{date.strftime('%a, %Y-%m-%d')}: (compensation)")
             else:
                 total_for_day = sum(daily_hours[date])
                 total_break_for_day = sum(daily_breaks[date])
@@ -394,10 +420,11 @@ def main_menu():
         print("8.  Manually End Break")
         print("9.  Manual Log for a Past Day")
         print("10. Log a Holiday")
+        print("11. Log a Compensation Day")
 
         print("\n--- View and Exit ---")
-        print("11. View Work Log")
-        print("12. Exit")
+        print("12. View Work Log")
+        print("13. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -422,8 +449,10 @@ def main_menu():
         elif choice == '10':
             manual_log_holiday()
         elif choice == '11':
-            view_work_log()
+            manual_log_compensation_day()
         elif choice == '12':
+            view_work_log()
+        elif choice == '13':
             print("Exiting the program.")
             break
         else:
